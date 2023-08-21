@@ -18,6 +18,7 @@
         <h1>Algoritmo Genetico</h1><br><br>
         <button class="btn btn-info" id="runAlgorithmBtn">Mostrar Mejor Gen</button><br><br><br>
         <div id="resultContainer"></div>
+        <div id="imageContainer"></div>  <!-- Div para mostrar la imagen -->
 
         <script>
             $(document).ready(function () {
@@ -31,6 +32,14 @@
 
                             resultContainer.append('<h5>Mejor Gen Encontrado: ' + response.mejor_gen.join(' - ') + '</h5><br>');
                             resultContainer.append('<h5>Función de Adaptación: ' + response.funcion_adaptacion + '</h5>');
+
+                            var imageContainer = $('#imageContainer');  // Selecciona el div para la imagen
+                            imageContainer.empty();  // Limpia el contenido anterior
+
+                            // Agrega la imagen generada en un elemento <img>
+                            var image = new Image();
+                            image.src = 'data:image/png;base64,' + response.image_base64;
+                            imageContainer.append(image);  // Agrega la imagen al contenedor
                         },
                         error: function (error) {
                             console.log(error);

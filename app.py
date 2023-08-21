@@ -1,4 +1,7 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, jsonify
+import matplotlib.pyplot as plt
+import base64
+import io
 
 import math
 import random
@@ -118,9 +121,24 @@ def home():
 def a_genetico():
     random.seed()
     mejor_gen = algoritmo_genetico()
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(mejor_gen[0], marker='o')
+    plt.title('Adaptaciones por Generación')
+    plt.xlabel('Generación')
+    plt.ylabel('Adaptación')
+    plt.grid(True)
+
+    image_stream = io.BytesIO()
+    plt.savefig(image_stream, format='png')
+    plt.close()
+    image_stream.seek(0)
+    encoded_image = base64.b64encode(image_stream.read()).decode('utf-8')
+    
     return jsonify({
         'mejor_gen': mejor_gen[0],
-        'funcion_adaptacion': mejor_gen[1]
+        'funcion_adaptacion': mejor_gen[1],
+        'image_base64': encoded_image
     })
     
 if __name__ == "__main__":
